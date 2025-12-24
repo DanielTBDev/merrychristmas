@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feliz Natal, Amor ❤️</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #f2f2f2, #d9d9d9);
+      color: #333;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
+
+    body.night {
+      background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+      color: #eee;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    header h1 {
+      font-size: 2.6rem;
+      margin-bottom: 10px;
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .contador {
+      background: rgba(255,255,255,0.85);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    body.night .contador,
+    body.night .evento,
+    body.night .carta {
+      background: rgba(40,40,40,0.9);
+    }
+
+    .contador h2 {
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+
+    .contador span {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .evento {
+      background: rgba(255,255,255,0.85);
+      padding: 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      overflow: hidden;
+    }
+
+    .evento:hover {
+      transform: scale(1.01);
+    }
+
+    .evento.bloqueado {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .mes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.3rem;
+    }
+
+    .seta {
+      transition: transform 0.4s ease;
+    }
+
+    .evento.aberto .seta {
+      transform: rotate(90deg);
+    }
+
+    .conteudo {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: all 0.6s ease;
+    }
+
+    .evento.aberto .conteudo {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .evento:not(.aberto) .conteudo {
+      display: none;
+    }
+
+    .conteudo img {
+      width: 120px;
+      height: 120px;
+      border-radius: 15px;
+      object-fit: cover;
+    }
+
+    .evento.destaque {
+      box-shadow: 0 0 0 2px rgba(255,0,0,0.25);
+    }
+
+    .botao-secreto {
+      margin-top: 30px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: none;
+    }
+
+    .carta-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .carta {
+      background: rgba(255,255,255,0.95);
+      padding: 40px;
+      border-radius: 25px;
+      max-width: 500px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🎄 Feliz Natal, amor ❤️</h1>
+  <p>Um pedacinho da nossa história</p>
+</header>
+
+<section class="contador">
+  <h2>⏳ Nosso tempo juntos</h2>
+  <p id="textoDias"></p>
+  <span id="dias"></span>
+</section>
+
+<section>
+  <h2 style="text-align:center; cursor:pointer;" onclick="toggleTimeline()">📸 Nossa linha do tempo</h2>
+
+  <div class="timeline" id="timeline" style="display:none;">
+
+    <!-- PRIMEIRO (DESBLOQUEADO) -->
+    <div class="evento" onclick="toggleEvento(this)">
+      <div class="mes-header">Dezembro / 2024 🎄 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2024-12.jpg"><div>O começo de tudo.</div></div>
+    </div>
+
+    <!-- DEMAIS BLOQUEADOS -->
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Janeiro / 2025 ✨ <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-01.jpg"><div>Começando o ano com você.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Fevereiro / 2025 💕 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-02.jpg"><div>Entre risadas e carinho.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Março / 2025 ❤️ <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-03.jpg"><div>Escolhemos caminhar juntos.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Abril / 2025 🌸 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-04.jpg"><div>Cada dia mais amor.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Maio / 2025 🌷 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-05.jpg"><div>Memórias simples e eternas.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Junho / 2025 ❄️ <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-06.jpg"><div>Até no frio, você aqueceu tudo.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Julho / 2025 ☀️ <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-07.jpg"><div>Mais histórias pra contar.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Agosto / 2025 💫 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-08.jpg"><div>Te amar ficou fácil.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Setembro / 2025 🌻 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-09.jpg"><div>Crescendo juntos.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Outubro / 2025 🎃 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-10.jpg"><div>Momentos que aquecem o coração.</div></div>
+    </div>
+
+    <div class="evento bloqueado" onclick="toggleEvento(this)">
+      <div class="mes-header">Novembro / 2025 🍂 <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-11.jpg"><div>Esperando nosso Natal.</div></div>
+    </div>
+
+    <div class="evento bloqueado destaque" id="dezembro2025" onclick="toggleEvento(this)">
+      <div class="mes-header">Dezembro / 2025 🎄❤️ <span class="seta">▶</span></div>
+      <div class="conteudo"><img src="2025-12.jpg"><div>Nosso primeiro Natal juntos.</div></div>
+    </div>
+
+  </div>
+
+  <div class="botao-secreto" id="botaoCarta" onclick="abrirCarta()">💌 Tem mais uma coisa…</div>
+</section>
+
+<section>
+  <h2 style="text-align:center;">🎶 Nossa música</h2>
+  <p style="text-align:center;">Eu só quero você — Zé Felipe & Ana Castela</p>
+  <audio controls autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+</section>
+
+<footer>
+  <p>Feito por mim, pensando em você.</p>
+</footer>
+
+<div class="carta-overlay" id="carta">
+  <div class="carta">
+    <h2>Amor ❤️</h2>
+    <p>Se eu pudesse escolher de novo, escolheria você todas as vezes.</p>
+    <br>
+    <button onclick="fecharCarta()">Fechar</button>
+  </div>
+</div>
+
+<script>
+  function toggleTimeline() {
+    const tl = document.getElementById('timeline');
+    tl.style.display = tl.style.display === 'none' ? 'flex' : 'none';
+  }
+
+  function toggleEvento(el) {
+    if (el.classList.contains('bloqueado')) return;
+
+    el.classList.toggle('aberto');
+
+    if (el.classList.contains('aberto')) {
+      const eventos = Array.from(document.querySelectorAll('.evento'));
+      const index = eventos.indexOf(el);
+
+      if (eventos[index + 1]) {
+        eventos[index + 1].classList.remove('bloqueado');
+      }
+
+      if (el.id === 'dezembro2025') {
+        document.getElementById('botaoCarta').style.display = 'block';
+      }
+    }
+  }
+
+  function abrirCarta() {
+    document.getElementById('carta').style.display = 'flex';
+  }
+
+  function fecharCarta() {
+    document.getElementById('carta').style.display = 'none';
+  }
+
+  const inicio = new Date('2025-03-22');
+  const hoje = new Date();
+  const dias = Math.floor((hoje - inicio) / (1000 * 60 * 60 * 24));
+
+  document.getElementById('dias').innerText = dias + ' dias ❤️';
+  document.getElementById('textoDias').innerText = 'Dias escolhendo você todos os dias';
+
+  if (hoje.getHours() >= 18 || hoje.getHours() < 6) {
+    document.body.classList.add('night');
+  }
+</script>
+
+</body>
+</html>
